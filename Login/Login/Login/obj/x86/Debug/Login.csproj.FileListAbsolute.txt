@@ -1,0 +1,11 @@
+D:\Git\git\Login\Login\Login\bin\Debug\Login.exe
+D:\Git\git\Login\Login\Login\bin\Debug\Login.pdb
+D:\Git\git\Login\Login\Login\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Git\git\Login\Login\Login\obj\x86\Debug\Login.Form1.resources
+D:\Git\git\Login\Login\Login\obj\x86\Debug\Login.Form2.resources
+D:\Git\git\Login\Login\Login\obj\x86\Debug\Login.Properties.Resources.resources
+D:\Git\git\Login\Login\Login\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\Git\git\Login\Login\Login\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\Git\git\Login\Login\Login\obj\x86\Debug\Login.exe
+D:\Git\git\Login\Login\Login\obj\x86\Debug\Login.pdb
+D:\Git\git\Login\Login\Login\obj\x86\Debug\Login.ChangPW.resources
