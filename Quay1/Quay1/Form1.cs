@@ -20,16 +20,16 @@ namespace Gate
         {
             InitializeComponent();
         }
-        public string getConnectionString(string filename)
+        public string getConnectionString()
         {
-            StreamReader srd = new StreamReader(filename);
+            StreamReader srd = new StreamReader("D:\\Sound\\config.txt");
             return srd.ReadLine();
         }
 
         public int getstt()
         {
             int a;
-            using (SqlConnection con = new SqlConnection(getConnectionString("D:\\Sound\\config.txt")))
+            using (SqlConnection con = new SqlConnection(getConnectionString()))
             {
                 con.Open();
                 SqlDataAdapter sDa = new SqlDataAdapter("Select * from TbQms", con);
@@ -56,30 +56,34 @@ namespace Gate
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(getConnectionString("D:\\Sound\\config.txt")))
+                using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
-                    SqlDataAdapter sDa = new SqlDataAdapter("Select * from TbQms order by stt", con);
+                    SqlDataAdapter sDa = new SqlDataAdapter("Select * from TbQms order by datecreate", con);
                     DataTable dt = new DataTable();
                     sDa.Fill(dt);
                     int count = dt.Rows.Count;
-                    for (int i = count - 1; i >= 0; i--)
+                    for (int i = 0; i <count-1; i++)
                     {
-                        string sqlInsert = "insert into TbQms(stt,quay) values(@stt,@quay)";
-                        SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
-                        int stt = Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1;
-                        sqlCom.Parameters.AddWithValue("stt", stt);
-                        sqlCom.Parameters.AddWithValue("quay", 1);
-                        sqlCom.ExecuteNonQuery();
-                        LoadSoundFile(@"d:\Sound\XM.wav").Play();
-                        Thread.Sleep(3000);
-                        Speck(stt);
-                        Thread.Sleep(1500);
-                        LoadSoundFile(@"d:\Sound\DQ.wav").Play();
-                        Thread.Sleep(2500);
-                        LoadSoundFile(@"d:\Sound\1.wav").Play();
-                        MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1));
-                        lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1);
+                        int j = i + 1;
+                        if (dt.Rows[i]["status"].ToString() != dt.Rows[j]["status"].ToString())
+                        {
+                            string sqlInsert = "update TbQms set datecom=@datecom,quay=1 where ";
+                            SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                            int stt = Int32.Parse(dt.Rows[j]["stt"].ToString());
+                            sqlCom.Parameters.AddWithValue("stt", stt);
+                            sqlCom.Parameters.AddWithValue("quay", 1);
+                            sqlCom.ExecuteNonQuery();
+                            LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                            Thread.Sleep(3000);
+                            Speck(stt);
+                            Thread.Sleep(1500);
+                            LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                            Thread.Sleep(2500);
+                            LoadSoundFile(@"d:\Sound\1.wav").Play();
+                            MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1));
+                            lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1);
+                        }
                         break;
                     }
                 }
@@ -94,7 +98,7 @@ namespace Gate
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(getConnectionString("D:\\Sound\\config.txt")))
+                using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
                     SqlDataAdapter sDa = new SqlDataAdapter("Select * from TbQms order by stt", con);
@@ -792,7 +796,7 @@ namespace Gate
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(getConnectionString("D:\\Sound\\config.txt")))
+                using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
                     SqlDataAdapter sDa = new SqlDataAdapter("Select top 1 * From TbQms Where quay=1 Order by stt desc", con);
@@ -818,7 +822,7 @@ namespace Gate
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(getConnectionString("D:\\Sound\\config.txt")))
+                using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
                     SqlDataAdapter sDa = new SqlDataAdapter("Select top 1 * From TbQms Where quay=2 Order by stt desc", con);
