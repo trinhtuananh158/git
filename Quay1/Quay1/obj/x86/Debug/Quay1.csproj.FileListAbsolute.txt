@@ -1,0 +1,9 @@
+D:\TTAnh\DGP\xephang\Quay1\Quay1\bin\Debug\Quay1.exe
+D:\TTAnh\DGP\xephang\Quay1\Quay1\bin\Debug\Quay1.pdb
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Quay1.Form1.resources
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Quay1.Properties.Resources.resources
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Quay1.exe
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Quay1.pdb

@@ -1,0 +1,22 @@
+D:\TTAnh\DGP\xephang\Quay1\Quay1\bin\Debug\Quay1.exe
+D:\TTAnh\DGP\xephang\Quay1\Quay1\bin\Debug\Quay1.pdb
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Gate.Form1.resources
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Gate.Properties.Resources.resources
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\GenerateResource.read.1.tlog
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\GenerateResource.write.1.tlog
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Quay1.exe
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Quay1.pdb
+D:\TTAnh\DGP\xephang\Quay1\Quay1\bin\Debug\Interop.WMPLib.dll
+D:\TTAnh\DGP\xephang\Quay1\Quay1\bin\Debug\AxInterop.WMPLib.dll
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Interop.WMPLib.dll
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\AxInterop.WMPLib.dll
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Gate.csproj.ResolveComReference.cache
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Gate.Resource1.resources
+D:\TTAnh\DGP\xephang\Quay1\Quay1\bin\Debug\Quay1.exe.manifest
+D:\TTAnh\DGP\xephang\Quay1\Quay1\bin\Debug\Quay1.application
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Quay1.exe.manifest
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Quay1.application
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\GenerateResource.read.1 (1).tlog
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\GenerateResource.write.1 (1).tlog
+D:\TTAnh\DGP\xephang\Quay1\Quay1\obj\x86\Debug\Gate.ICS.resources
