@@ -16,6 +16,7 @@ namespace Gate
     public partial class Form1 : Form
     {
         string[] filename = { @"d:\Sound\0.wav", @"d:\Sound\1.wav", @"d:\Sound\2.wav", @"d:\Sound\3.wav", @"d:\Sound\4.wav", @"d:\Sound\5.wav", @"d:\Sound\6.wav", @"d:\Sound\7.wav", @"d:\Sound\8.wav", @"d:\Sound\9.wav" };
+        string today = String.Format("{0:yyyy-MM-dd}", DateTime.Now);
         public Form1()
         {
             InitializeComponent();
@@ -56,36 +57,62 @@ namespace Gate
         {
             try
             {
+                bool flag=false;
                 using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
-                    SqlDataAdapter sDa = new SqlDataAdapter("Select * from TbQms order by datecreate", con);
+                    SqlDataAdapter sDa = new SqlDataAdapter("Select * from TbQms where LEFT(convert(VARCHAR,datecreate,120),10)='"+today+"' order by datecreate,stt", con);
                     DataTable dt = new DataTable();
                     sDa.Fill(dt);
                     int count = dt.Rows.Count;
-                    for (int i = 0; i <count-1; i++)
+                    if (dt.Rows[0]["status"].ToString() == "new")
                     {
-                        int j = i + 1;
-                        if (dt.Rows[i]["status"].ToString() != dt.Rows[j]["status"].ToString())
-                        {
-                            string sqlInsert = "update TbQms set datecom=@datecom,quay=1 where ";
-                            SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
-                            int stt = Int32.Parse(dt.Rows[j]["stt"].ToString());
-                            sqlCom.Parameters.AddWithValue("stt", stt);
-                            sqlCom.Parameters.AddWithValue("quay", 1);
-                            sqlCom.ExecuteNonQuery();
-                            LoadSoundFile(@"d:\Sound\XM.wav").Play();
-                            Thread.Sleep(3000);
-                            Speck(stt);
-                            Thread.Sleep(1500);
-                            LoadSoundFile(@"d:\Sound\DQ.wav").Play();
-                            Thread.Sleep(2500);
-                            LoadSoundFile(@"d:\Sound\1.wav").Play();
-                            MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1));
-                            lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1);
-                        }
-                        break;
+                        flag = true;
+                        string sqlInsert = "update TbQms set status='com',datecom=@datecom,quay=1 where stt=" + dt.Rows[0]["stt"].ToString();
+                        SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                        int stt = Int32.Parse(dt.Rows[0]["stt"].ToString());
+                        sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                        sqlCom.Parameters.AddWithValue("quay", 1);
+                        sqlCom.ExecuteNonQuery();
+                        LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                        Thread.Sleep(3000);
+                        Speck(stt);
+                        Thread.Sleep(1500);
+                        LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                        Thread.Sleep(2500);
+                        LoadSoundFile(@"d:\Sound\1.wav").Play();
+                        MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString())));
+                        lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString()));
                     }
+                    else
+                    {
+                        for (int i = 0; i < count - 1; i++)
+                        {
+                            int j = i + 1;
+                            if (dt.Rows[i]["status"].ToString() != dt.Rows[j]["status"].ToString())
+                            {
+                                flag = true;
+                                string sqlInsert = "update TbQms set status='com',datecom=@datecom,quay=1 where stt=" + dt.Rows[j]["stt"].ToString();
+                                SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                                int stt = Int32.Parse(dt.Rows[j]["stt"].ToString());
+                                sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                sqlCom.Parameters.AddWithValue("quay", 1);
+                                sqlCom.ExecuteNonQuery();
+                                LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                                Thread.Sleep(3000);
+                                Speck(stt);
+                                Thread.Sleep(1500);
+                                LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                                Thread.Sleep(2500);
+                                LoadSoundFile(@"d:\Sound\1.wav").Play();
+                                MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1));
+                                lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1);
+                                break;
+                            }
+                        }
+                    }
+                    if (flag == false)
+                        MessageBox.Show("Đã hết số vào quầy!");
                 }
             }
             catch (Exception ex)
@@ -98,32 +125,40 @@ namespace Gate
         {
             try
             {
+                bool flag = false;
                 using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
-                    SqlDataAdapter sDa = new SqlDataAdapter("Select * from TbQms order by stt", con);
+                    SqlDataAdapter sDa = new SqlDataAdapter("Select * from TbQms where LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "' order by datecreate", con);
                     DataTable dt = new DataTable();
                     sDa.Fill(dt);
                     int count = dt.Rows.Count;
-                    for (int i = count - 1; i >= 0; i--)
+                    for (int i = 0; i < count-1; i++)
                     {
-                        string sqlInsert = "insert into TbQms(stt,quay) values(@stt,@quay)";
-                        SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
-                        int stt = Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1;
-                        sqlCom.Parameters.AddWithValue("stt", stt);
-                        sqlCom.Parameters.AddWithValue("quay", 2);
-                        sqlCom.ExecuteNonQuery();
-                        LoadSoundFile(@"d:\Sound\XM.wav").Play();
-                        Thread.Sleep(3000);
-                        Speck(stt);
-                        Thread.Sleep(1500);
-                        LoadSoundFile(@"d:\Sound\DQ.wav").Play();
-                        Thread.Sleep(2500);
-                        LoadSoundFile(@"d:\Sound\2.wav").Play();
-                        MessageBox.Show("Next in Gate 2: " + getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1));
-                        lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1);
-                        break;
+                        int j = i + 1;
+                        if (dt.Rows[i]["status"].ToString() != dt.Rows[j]["status"].ToString())
+                        {
+                            flag = true;
+                            string sqlInsert = "update TbQms set status='com',datecom=@datecom,quay=2 where stt=" + dt.Rows[j]["stt"].ToString();
+                            SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                            int stt = Int32.Parse(dt.Rows[j]["stt"].ToString());
+                            sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                            sqlCom.Parameters.AddWithValue("quay", 2);
+                            sqlCom.ExecuteNonQuery();
+                            LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                            Thread.Sleep(3000);
+                            Speck(stt);
+                            Thread.Sleep(1500);
+                            LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                            Thread.Sleep(2500);
+                            LoadSoundFile(@"d:\Sound\2.wav").Play();
+                            MessageBox.Show("Next in Gate 2: " + getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1));
+                            lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1);
+                            break;
+                        }
                     }
+                    if (flag == false)
+                        MessageBox.Show("Đã hết số vào quầy!");
                 }
             }
             catch (Exception ex)
@@ -799,17 +834,24 @@ namespace Gate
                 using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
-                    SqlDataAdapter sDa = new SqlDataAdapter("Select top 1 * From TbQms Where quay=1 Order by stt desc", con);
+                    SqlDataAdapter sDa = new SqlDataAdapter("Select top 1 * From TbQms Where quay=1 and status='com' and LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "' and LEFT(convert(VARCHAR,datecom,120),10)='"+today+"' Order by datecom desc,stt desc", con);
                     DataTable dt = new DataTable();
                     sDa.Fill(dt);
-                    lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString()));
-                    LoadSoundFile(@"d:\Sound\XM.wav").Play();
-                    Thread.Sleep(3000);
-                    Speck(Int32.Parse(dt.Rows[0]["stt"].ToString()));
-                    Thread.Sleep(1500);
-                    LoadSoundFile(@"d:\Sound\DQ.wav").Play();
-                    Thread.Sleep(2200);
-                    LoadSoundFile(@"d:\Sound\1.wav").Play();
+                    if (dt.Rows.Count == 0)
+                    {
+                        MessageBox.Show("Hôm nay chưa có khách vào!");
+                    }
+                    else
+                    {
+                        lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString()));
+                        LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                        Thread.Sleep(3000);
+                        Speck(Int32.Parse(dt.Rows[0]["stt"].ToString()));
+                        Thread.Sleep(1500);
+                        LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                        Thread.Sleep(2200);
+                        LoadSoundFile(@"d:\Sound\1.wav").Play();
+                    }
                 }
             }
             catch(Exception ex)
@@ -825,17 +867,22 @@ namespace Gate
                 using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
-                    SqlDataAdapter sDa = new SqlDataAdapter("Select top 1 * From TbQms Where quay=2 Order by stt desc", con);
+                    SqlDataAdapter sDa = new SqlDataAdapter("Select top 1 * From TbQms Where quay=2 and status='com' and LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "' and LEFT(convert(VARCHAR,datecom,120),10)='" + today + "' Order by datecom desc,stt desc", con);
                     DataTable dt = new DataTable();
                     sDa.Fill(dt);
-                    lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString()));
-                    LoadSoundFile(@"d:\Sound\XM.wav").Play();
-                    Thread.Sleep(3000);
-                    Speck(Int32.Parse(dt.Rows[0]["stt"].ToString()));
-                    Thread.Sleep(1500);
-                    LoadSoundFile(@"d:\Sound\DQ.wav").Play();
-                    Thread.Sleep(2200);
-                    LoadSoundFile(@"d:\Sound\2.wav").Play();
+                    if (dt.Rows.Count == 0)
+                        MessageBox.Show("Hôm nay chưa có khách vào!");
+                    else
+                    {
+                        lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString()));
+                        LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                        Thread.Sleep(3000);
+                        Speck(Int32.Parse(dt.Rows[0]["stt"].ToString()));
+                        Thread.Sleep(1500);
+                        LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                        Thread.Sleep(2200);
+                        LoadSoundFile(@"d:\Sound\2.wav").Play();
+                    }
                 }
             }
             catch (Exception ex)

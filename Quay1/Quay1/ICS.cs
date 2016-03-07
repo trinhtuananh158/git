@@ -38,16 +38,16 @@ namespace Gate
                     DataRow dr;
                     data.Columns.Add("STT");
                     data.Columns.Add("Trạng thái");
-                    data.Columns.Add("Ngày giờ tạo");
-                    data.Columns.Add("Ngày giờ xong");
+                    data.Columns.Add("Thời gian tạo");
+                    data.Columns.Add("Thời gian hoàn thành");
                     data.Columns.Add("Quầy");
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         dr = data.NewRow();
                         dr["STT"] = dt.Rows[i]["stt"].ToString();
                         dr["Trạng thái"] = dt.Rows[i]["status"].ToString();
-                        dr["Ngày giờ tạo"] = dt.Rows[i]["datecreate"].ToString();
-                        dr["Ngày giờ xong"] = dt.Rows[i]["datecom"].ToString();
+                        dr["Thời gian tạo"] = dt.Rows[i]["datecreate"].ToString();
+                        dr["Thời gian hoàn thành"] = dt.Rows[i]["datecom"].ToString();
                         dr["Quầy"] = dt.Rows[i]["quay"].ToString();
                         data.Rows.Add(dr);
                     }
@@ -76,8 +76,8 @@ namespace Gate
                     DataRow dr;
                     data.Columns.Add("STT");
                     data.Columns.Add("Trạng thái");
-                    data.Columns.Add("Ngày giờ tạo");
-                    data.Columns.Add("Ngày giờ xong");
+                    data.Columns.Add("Thời gian tạo");
+                    data.Columns.Add("Thời gian hoàn thành");
                     data.Columns.Add("Quầy");
                     if (dt.Rows.Count == 0)
                         MessageBox.Show("Không có dữ liệu ngày "+stringday);
@@ -86,8 +86,8 @@ namespace Gate
                         dr = data.NewRow();
                         dr["STT"] = dt.Rows[i]["stt"].ToString();
                         dr["Trạng thái"] = dt.Rows[i]["status"].ToString();
-                        dr["Ngày giờ tạo"] = dt.Rows[i]["datecreate"].ToString();
-                        dr["Ngày giờ xong"] = dt.Rows[i]["datecom"].ToString();
+                        dr["Thời gian tạo"] = dt.Rows[i]["datecreate"].ToString();
+                        dr["Thời gian hoàn thành"] = dt.Rows[i]["datecom"].ToString();
                         dr["Quầy"] = dt.Rows[i]["quay"].ToString();
                         data.Rows.Add(dr);
                     }
@@ -131,16 +131,16 @@ namespace Gate
                         DataRow dr;
                         data.Columns.Add("STT");
                         data.Columns.Add("Trạng thái");
-                        data.Columns.Add("Ngày giờ tạo");
-                        data.Columns.Add("Ngày giờ xong");
+                        data.Columns.Add("Thời gian tạo");
+                        data.Columns.Add("Thời gian hoàn thành");
                         data.Columns.Add("Quầy");
                         for (int i = 0; i < dt1.Rows.Count; i++)
                         {
                             dr = data.NewRow();
                             dr["STT"] = dt1.Rows[i]["stt"].ToString();
                             dr["Trạng thái"] = dt1.Rows[i]["status"].ToString();
-                            dr["Ngày giờ tạo"] = dt1.Rows[i]["datecreate"].ToString();
-                            dr["Ngày giờ xong"] = dt1.Rows[i]["datecom"].ToString();
+                            dr["Thời gian tạo"] = dt1.Rows[i]["datecreate"].ToString();
+                            dr["Thời gian hoàn thành"] = dt1.Rows[i]["datecom"].ToString();
                             dr["Quầy"] = dt1.Rows[i]["quay"].ToString();
                             data.Rows.Add(dr);
                         }
@@ -163,16 +163,16 @@ namespace Gate
                         DataRow dr;
                         data.Columns.Add("STT");
                         data.Columns.Add("Trạng thái");
-                        data.Columns.Add("Ngày giờ tạo");
-                        data.Columns.Add("Ngày giờ xong");
+                        data.Columns.Add("Thời gian tạo");
+                        data.Columns.Add("Thời gian hoàn thành");
                         data.Columns.Add("Quầy");
                         for (int i = 0; i < dt1.Rows.Count; i++)
                         {
                             dr = data.NewRow();
                             dr["STT"] = dt1.Rows[i]["stt"].ToString();
                             dr["Trạng thái"] = dt1.Rows[i]["status"].ToString();
-                            dr["Ngày giờ tạo"] = dt1.Rows[i]["datecreate"].ToString();
-                            dr["Ngày giờ xong"] = dt1.Rows[i]["datecom"].ToString();
+                            dr["Thời gian tạo"] = dt1.Rows[i]["datecreate"].ToString();
+                            dr["Thời gian hoàn thành"] = dt1.Rows[i]["datecom"].ToString();
                             dr["Quầy"] = dt1.Rows[i]["quay"].ToString();
                             data.Rows.Add(dr);
                         }
@@ -181,6 +181,43 @@ namespace Gate
                 }
             }
             catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string today = String.Format("{0:yyyy-MM-dd}", DateTime.Now);
+                using (SqlConnection con = new SqlConnection(getConnectionString()))
+                {
+                    con.Open();
+                    SqlDataAdapter sda = new SqlDataAdapter("Select * from TbQms where LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "'  order by stt", con);
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                    DataTable data = new DataTable();
+                    DataRow dr;
+                    data.Columns.Add("STT");
+                    data.Columns.Add("Trạng thái");
+                    data.Columns.Add("Thời gian tạo");
+                    data.Columns.Add("Thời gian hoàn thành");
+                    data.Columns.Add("Quầy");
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        dr = data.NewRow();
+                        dr["STT"] = dt.Rows[i]["stt"].ToString();
+                        dr["Trạng thái"] = dt.Rows[i]["status"].ToString();
+                        dr["Thời gian tạo"] = dt.Rows[i]["datecreate"].ToString();
+                        dr["Thời gian hoàn thành"] = dt.Rows[i]["datecom"].ToString();
+                        dr["Quầy"] = dt.Rows[i]["quay"].ToString();
+                        data.Rows.Add(dr);
+                    }
+                    dataGridView1.DataSource = data;
+                }
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }

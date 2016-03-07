@@ -15,7 +15,7 @@ namespace Gate
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ICS());
+            Application.Run(new Form1());
         }
     }
 }
