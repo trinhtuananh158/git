@@ -41,3 +41,25 @@ D:\Git\git\Quay1\Quay1\obj\x86\Release\GenerateResource.write.1 (1).tlog
 D:\Git\git\Quay1\Quay1\obj\x86\Release\GenerateResource.write.1.tlog
 D:\Git\git\Quay1\Quay1\obj\x86\Release\Quay1.exe.manifest
 D:\Git\git\Quay1\Quay1\obj\x86\Release\Quay1.application
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\Interop.WMPLib.dll
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\AxInterop.WMPLib.dll
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\Gate.csproj.ResolveComReference.cache
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\Quay1.exe
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\Quay1.pdb
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Release\Quay1.exe.manifest
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Release\Quay1.application
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Release\Quay1.exe
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Release\Quay1.pdb
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Release\Interop.WMPLib.dll
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Release\AxInterop.WMPLib.dll
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\Gate.Form1.resources
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\Gate.ICS.resources
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\Gate.Properties.Resources.resources
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\Gate.Resource1.resources
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\GenerateResource.read.1 (1).tlog
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\GenerateResource.read.1.tlog
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\GenerateResource.write.1 (1).tlog
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\GenerateResource.write.1.tlog
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\Quay1.exe.manifest
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Release\Quay1.application

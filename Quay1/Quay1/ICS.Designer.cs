@@ -33,6 +33,7 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.btnTim = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -41,13 +42,13 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(50, 98);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(572, 280);
+            this.dataGridView1.Size = new System.Drawing.Size(572, 504);
             this.dataGridView1.TabIndex = 0;
             // 
             // btnGetnum
             // 
             this.btnGetnum.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGetnum.ForeColor = System.Drawing.Color.SteelBlue;
+            this.btnGetnum.ForeColor = System.Drawing.Color.RoyalBlue;
             this.btnGetnum.Location = new System.Drawing.Point(422, 62);
             this.btnGetnum.Name = "btnGetnum";
             this.btnGetnum.Size = new System.Drawing.Size(90, 30);
@@ -59,7 +60,7 @@
             // btnRefresh
             // 
             this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.ForeColor = System.Drawing.Color.SteelBlue;
+            this.btnRefresh.ForeColor = System.Drawing.Color.RoyalBlue;
             this.btnRefresh.Location = new System.Drawing.Point(532, 62);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(90, 30);
@@ -78,7 +79,7 @@
             // btnTim
             // 
             this.btnTim.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTim.ForeColor = System.Drawing.Color.SteelBlue;
+            this.btnTim.ForeColor = System.Drawing.Color.RoyalBlue;
             this.btnTim.Location = new System.Drawing.Point(317, 62);
             this.btnTim.Name = "btnTim";
             this.btnTim.Size = new System.Drawing.Size(90, 30);
@@ -87,11 +88,23 @@
             this.btnTim.UseVisualStyleBackColor = true;
             this.btnTim.Click += new System.EventHandler(this.btnTim_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26F);
+            this.label1.ForeColor = System.Drawing.Color.RoyalBlue;
+            this.label1.Location = new System.Drawing.Point(237, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(212, 39);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "QMS for ICS";
+            // 
             // ICS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 410);
+            this.ClientSize = new System.Drawing.Size(674, 628);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnTim);
@@ -102,6 +115,7 @@
             this.Load += new System.EventHandler(this.ICS_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -112,5 +126,6 @@
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button btnTim;
+        private System.Windows.Forms.Label label1;
     }
 }

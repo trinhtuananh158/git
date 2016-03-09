@@ -57,7 +57,6 @@ namespace Gate
         {
             try
             {
-                bool flag=false;
                 using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
@@ -67,12 +66,9 @@ namespace Gate
                     int count = dt.Rows.Count;
                     if (dt.Rows[0]["status"].ToString() == "new")
                     {
-                        flag = true;
-                        string sqlInsert = "update TbQms set status='com',datecom=@datecom,quay=1 where stt=" + dt.Rows[0]["stt"].ToString();
+                        string sqlInsert = "update TbQms set status='in progress',quay=1 where stt=" + dt.Rows[0]["stt"].ToString();
                         SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
                         int stt = Int32.Parse(dt.Rows[0]["stt"].ToString());
-                        sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
-                        sqlCom.Parameters.AddWithValue("quay", 1);
                         sqlCom.ExecuteNonQuery();
                         LoadSoundFile(@"d:\Sound\XM.wav").Play();
                         Thread.Sleep(3000);
@@ -84,20 +80,64 @@ namespace Gate
                         MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString())));
                         lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString()));
                     }
+                    else if (dt.Rows[count-1]["status"].ToString() == "com")
+                    {
+                        string sqlInsert2 = "update TbQms set status='com',datecom=@datecom where status='in progress' and quay=1";
+                        SqlCommand sqlCom2 = new SqlCommand(sqlInsert2, con);
+                        sqlCom2.Parameters.AddWithValue("@datecom", DateTime.Now);
+                        sqlCom2.ExecuteNonQuery();
+                        MessageBox.Show("Đã hết số vào quầy!");
+                    }
+                    else if ((dt.Rows[count - 1]["status"].ToString() == "in progress") && (dt.Rows[count - 2]["status"].ToString()=="com"))
+                    {
+                        if (dt.Rows[count-1]["quay"].ToString() == "1")
+                        {
+                            string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[count-1]["stt"].ToString();
+                            SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                            sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                            sqlCom.ExecuteNonQuery();
+                        }
+                        MessageBox.Show("Đã hết số vào quầy!");
+                    }
+                    else if ((dt.Rows[count - 1]["status"].ToString() == "in progress") && (dt.Rows[count - 2]["status"].ToString() == "in progress"))
+                    {
+                        if (dt.Rows[count - 2]["quay"].ToString() == "1")
+                        {
+                            string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[count - 2]["stt"].ToString();
+                            SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                            sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                            sqlCom.ExecuteNonQuery();
+                        }
+                        else if (dt.Rows[count - 1]["quay"].ToString() == "1")
+                        {
+                            string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[count - 1]["stt"].ToString();
+                            SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                            sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                            sqlCom.ExecuteNonQuery();
+                        }
+                        MessageBox.Show("Đã hết số vào quầy!");
+                    }
+
                     else
                     {
-                        for (int i = 0; i < count - 1; i++)
+                        for (int i = 0; i < count - 2; i++)
                         {
                             int j = i + 1;
-                            if (dt.Rows[i]["status"].ToString() != dt.Rows[j]["status"].ToString())
+                            int z = j + 1;
+                            if ((dt.Rows[i]["status"].ToString() == "in progress") && (dt.Rows[i]["quay"].ToString() == "1") && (dt.Rows[j]["status"].ToString() == "new"))
                             {
-                                flag = true;
-                                string sqlInsert = "update TbQms set status='com',datecom=@datecom,quay=1 where stt=" + dt.Rows[j]["stt"].ToString();
+                                string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[i]["stt"].ToString();
                                 SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
                                 int stt = Int32.Parse(dt.Rows[j]["stt"].ToString());
                                 sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
-                                sqlCom.Parameters.AddWithValue("quay", 1);
                                 sqlCom.ExecuteNonQuery();
+                                string sqlInsert2 = "update TbQms set status='com',datecom=@datecom where status='in progress' and quay=1";
+                                SqlCommand sqlCom2 = new SqlCommand(sqlInsert2, con);
+                                sqlCom2.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                sqlCom2.ExecuteNonQuery();
+                                string sqlInsert1 = "update TbQms set status='in progress',quay=1 where stt=" + dt.Rows[j]["stt"].ToString();
+                                SqlCommand sqlCom1 = new SqlCommand(sqlInsert1, con);
+                                sqlCom1.ExecuteNonQuery();
                                 LoadSoundFile(@"d:\Sound\XM.wav").Play();
                                 Thread.Sleep(3000);
                                 Speck(stt);
@@ -109,10 +149,89 @@ namespace Gate
                                 lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1);
                                 break;
                             }
+                            else if ((dt.Rows[i]["status"].ToString() == "in progress") && (dt.Rows[j]["status"].ToString() == "in progress") && (dt.Rows[z]["status"].ToString() == "new"))
+                            {
+                                string sqlInsert2 = "update TbQms set status='com',datecom=@datecom where status='in progress' and quay=1";
+                                SqlCommand sqlCom2 = new SqlCommand(sqlInsert2, con);
+                                sqlCom2.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                sqlCom2.ExecuteNonQuery();
+                                string sqlInsert1 = "update TbQms set status='in progress',quay=1 where stt=" + dt.Rows[z]["stt"].ToString();
+                                SqlCommand sqlCom1 = new SqlCommand(sqlInsert1, con);
+                                sqlCom1.ExecuteNonQuery();
+                                if (dt.Rows[i]["quay"].ToString() == "1")
+                                {
+                                    string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[i]["stt"].ToString();
+                                    SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                                    sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                    sqlCom.ExecuteNonQuery();
+                                }
+                                else if (dt.Rows[j]["quay"].ToString() == "1")
+                                {
+                                    string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[j]["stt"].ToString();
+                                    SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                                    sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                    sqlCom.ExecuteNonQuery();
+                                }
+                                int stt = Int32.Parse(dt.Rows[z]["stt"].ToString());
+                                LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                                Thread.Sleep(3000);
+                                Speck(stt);
+                                Thread.Sleep(1500);
+                                LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                                Thread.Sleep(2500);
+                                LoadSoundFile(@"d:\Sound\1.wav").Play();
+                                MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()) + 1));
+                                lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()) + 1);
+                                break;
+                            }
+                            else if ((dt.Rows[i]["status"].ToString() == "com") && (dt.Rows[j]["status"].ToString() == "in progress") && (dt.Rows[z]["status"].ToString() == "new"))
+                            {
+                                if (dt.Rows[j]["quay"].ToString() == "1")
+                                {
+                                    string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[j]["stt"].ToString();
+                                    SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                                    sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                    sqlCom.ExecuteNonQuery();
+                                }
+                                string sqlInsert2 = "update TbQms set status='com',datecom=@datecom where status='in progress' and quay=1";
+                                SqlCommand sqlCom2 = new SqlCommand(sqlInsert2, con);
+                                sqlCom2.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                sqlCom2.ExecuteNonQuery();
+                                string sqlInsert1 = "update TbQms set status='in progress',quay=1 where stt=" + dt.Rows[z]["stt"].ToString();
+                                SqlCommand sqlCom1 = new SqlCommand(sqlInsert1, con);
+                                sqlCom1.ExecuteNonQuery();
+                                int stt = Int32.Parse(dt.Rows[z]["stt"].ToString());
+                                LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                                Thread.Sleep(3000);
+                                Speck(stt);
+                                Thread.Sleep(1500);
+                                LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                                Thread.Sleep(2500);
+                                LoadSoundFile(@"d:\Sound\1.wav").Play();
+                                MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()) + 1));
+                                lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()) + 1);
+                                break;
+                            }
+                            else if ((dt.Rows[i]["status"].ToString() == "com") && (dt.Rows[j]["status"].ToString() == "new"))
+                            {
+                                string sqlInsert = "update TbQms set status='in progress',quay=1 where stt=" + dt.Rows[j]["stt"].ToString();
+                                SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                                int stt = Int32.Parse(dt.Rows[j]["stt"].ToString());
+                                sqlCom.ExecuteNonQuery();
+                                LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                                Thread.Sleep(3000);
+                                Speck(stt);
+                                Thread.Sleep(1500);
+                                LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                                Thread.Sleep(2500);
+                                LoadSoundFile(@"d:\Sound\1.wav").Play();
+                                MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString())));
+                                lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()));
+                                break;
+                            }
                         }
                     }
-                    if (flag == false)
-                        MessageBox.Show("Đã hết số vào quầy!");
+                        
                 }
             }
             catch (Exception ex)
@@ -125,40 +244,176 @@ namespace Gate
         {
             try
             {
-                bool flag = false;
                 using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
-                    SqlDataAdapter sDa = new SqlDataAdapter("Select * from TbQms where LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "' order by datecreate", con);
+                    SqlDataAdapter sDa = new SqlDataAdapter("Select * from TbQms where LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "' order by datecreate,stt", con);
                     DataTable dt = new DataTable();
                     sDa.Fill(dt);
                     int count = dt.Rows.Count;
-                    for (int i = 0; i < count-1; i++)
+                    if (dt.Rows[0]["status"].ToString() == "new")
                     {
-                        int j = i + 1;
-                        if (dt.Rows[i]["status"].ToString() != dt.Rows[j]["status"].ToString())
+                        string sqlInsert = "update TbQms set status='in progress',quay=2 where stt=" + dt.Rows[0]["stt"].ToString();
+                        SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                        int stt = Int32.Parse(dt.Rows[0]["stt"].ToString());
+                        sqlCom.ExecuteNonQuery();
+                        LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                        Thread.Sleep(3000);
+                        Speck(stt);
+                        Thread.Sleep(1500);
+                        LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                        Thread.Sleep(2500);
+                        LoadSoundFile(@"d:\Sound\2.wav").Play();
+                        MessageBox.Show("Next in Gate 2: " + getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString())));
+                        lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString()));
+                    }
+                    else if (dt.Rows[count - 1]["status"].ToString() == "com")
+                    {
+                        string sqlInsert2 = "update TbQms set status='com',datecom=@datecom where status='in progress' and quay=2";
+                        SqlCommand sqlCom2 = new SqlCommand(sqlInsert2, con);
+                        sqlCom2.Parameters.AddWithValue("@datecom", DateTime.Now);
+                        sqlCom2.ExecuteNonQuery();
+                        MessageBox.Show("Đã hết số vào quầy!");
+                    }
+                    else if ((dt.Rows[count - 1]["status"].ToString() == "in progress") && (dt.Rows[count - 2]["status"].ToString() == "com"))
+                    {
+                        if (dt.Rows[count - 1]["quay"].ToString() == "2")
                         {
-                            flag = true;
-                            string sqlInsert = "update TbQms set status='com',datecom=@datecom,quay=2 where stt=" + dt.Rows[j]["stt"].ToString();
+                            string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[count - 1]["stt"].ToString();
                             SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
-                            int stt = Int32.Parse(dt.Rows[j]["stt"].ToString());
                             sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
-                            sqlCom.Parameters.AddWithValue("quay", 2);
                             sqlCom.ExecuteNonQuery();
-                            LoadSoundFile(@"d:\Sound\XM.wav").Play();
-                            Thread.Sleep(3000);
-                            Speck(stt);
-                            Thread.Sleep(1500);
-                            LoadSoundFile(@"d:\Sound\DQ.wav").Play();
-                            Thread.Sleep(2500);
-                            LoadSoundFile(@"d:\Sound\2.wav").Play();
-                            MessageBox.Show("Next in Gate 2: " + getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1));
-                            lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1);
-                            break;
+                        }
+                        MessageBox.Show("Đã hết số vào quầy!");
+                    }
+                    else if ((dt.Rows[count - 1]["status"].ToString() == "in progress") && (dt.Rows[count - 2]["status"].ToString() == "in progress"))
+                    {
+                        if (dt.Rows[count - 2]["quay"].ToString() == "2")
+                        {
+                            string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[count - 2]["stt"].ToString();
+                            SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                            sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                            sqlCom.ExecuteNonQuery();
+                        }
+                        else if (dt.Rows[count - 1]["quay"].ToString() == "2")
+                        {
+                            string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[count - 1]["stt"].ToString();
+                            SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                            sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                            sqlCom.ExecuteNonQuery();
+                        }
+                        MessageBox.Show("Đã hết số vào quầy!");
+                    }
+
+                    else
+                    {
+                        for (int i = 0; i < count - 2; i++)
+                        {
+                            int j = i + 1;
+                            int z = j + 1;
+                            if ((dt.Rows[i]["status"].ToString() == "in progress") && (dt.Rows[i]["quay"].ToString() == "2") && (dt.Rows[j]["status"].ToString() == "new"))
+                            {
+                                string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[i]["stt"].ToString();
+                                SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                                int stt = Int32.Parse(dt.Rows[j]["stt"].ToString());
+                                sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                sqlCom.ExecuteNonQuery();
+                                string sqlInsert2 = "update TbQms set status='com',datecom=@datecom where status='in progress' and quay=2";
+                                SqlCommand sqlCom2 = new SqlCommand(sqlInsert2, con);
+                                sqlCom2.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                sqlCom2.ExecuteNonQuery();
+                                string sqlInsert1 = "update TbQms set status='in progress',quay=2 where stt=" + dt.Rows[j]["stt"].ToString();
+                                SqlCommand sqlCom1 = new SqlCommand(sqlInsert1, con);
+                                sqlCom1.ExecuteNonQuery();
+                                LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                                Thread.Sleep(3000);
+                                Speck(stt);
+                                Thread.Sleep(1500);
+                                LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                                Thread.Sleep(2500);
+                                LoadSoundFile(@"d:\Sound\2.wav").Play();
+                                MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1));
+                                lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[i]["stt"].ToString()) + 1);
+                                break;
+                            }
+                            else if ((dt.Rows[i]["status"].ToString() == "in progress") && (dt.Rows[j]["status"].ToString() == "in progress") && (dt.Rows[z]["status"].ToString() == "new"))
+                            {
+                                string sqlInsert1 = "update TbQms set status='in progress',quay=2 where stt=" + dt.Rows[z]["stt"].ToString();
+                                SqlCommand sqlCom1 = new SqlCommand(sqlInsert1, con);
+                                sqlCom1.ExecuteNonQuery();
+                                if (dt.Rows[i]["quay"].ToString() == "2")
+                                {
+                                    string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[i]["stt"].ToString();
+                                    SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                                    sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                    sqlCom.ExecuteNonQuery();
+                                }
+                                else if (dt.Rows[j]["quay"].ToString() == "2")
+                                {
+                                    string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[j]["stt"].ToString();
+                                    SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                                    sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                    sqlCom.ExecuteNonQuery();
+                                }
+                                int stt = Int32.Parse(dt.Rows[z]["stt"].ToString());
+                                LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                                Thread.Sleep(3000);
+                                Speck(stt);
+                                Thread.Sleep(1500);
+                                LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                                Thread.Sleep(2500);
+                                LoadSoundFile(@"d:\Sound\2.wav").Play();
+                                MessageBox.Show("Next in Gate 2: " + getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()) + 1));
+                                lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()) + 1);
+                                break;
+                            }
+                            else if ((dt.Rows[i]["status"].ToString() == "com") && (dt.Rows[j]["status"].ToString() == "in progress") && (dt.Rows[z]["status"].ToString() == "new"))
+                            {
+                                if (dt.Rows[j]["quay"].ToString() == "2")
+                                {
+                                    string sqlInsert = "update TbQms set status='com',datecom=@datecom where stt=" + dt.Rows[j]["stt"].ToString();
+                                    SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                                    sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                    sqlCom.ExecuteNonQuery();
+                                }
+                                string sqlInsert2 = "update TbQms set status='com',datecom=@datecom where status='in progress' and quay=2";
+                                SqlCommand sqlCom2 = new SqlCommand(sqlInsert2, con);
+                                sqlCom2.Parameters.AddWithValue("@datecom", DateTime.Now);
+                                sqlCom2.ExecuteNonQuery();
+                                string sqlInsert1 = "update TbQms set status='in progress',quay=2 where stt=" + dt.Rows[z]["stt"].ToString();
+                                SqlCommand sqlCom1 = new SqlCommand(sqlInsert1, con);
+                                sqlCom1.ExecuteNonQuery();
+                                int stt = Int32.Parse(dt.Rows[z]["stt"].ToString());
+                                LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                                Thread.Sleep(3000);
+                                Speck(stt);
+                                Thread.Sleep(1500);
+                                LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                                Thread.Sleep(2500);
+                                LoadSoundFile(@"d:\Sound\2.wav").Play();
+                                MessageBox.Show("Next in Gate 2: " + getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()) + 1));
+                                lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()) + 1);
+                                break;
+                            }
+                            else if ((dt.Rows[i]["status"].ToString() == "com") && (dt.Rows[j]["status"].ToString() == "new"))
+                            {
+                                string sqlInsert = "update TbQms set status='in progress',quay=2 where stt=" + dt.Rows[j]["stt"].ToString();
+                                SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
+                                int stt = Int32.Parse(dt.Rows[j]["stt"].ToString());
+                                sqlCom.ExecuteNonQuery();
+                                LoadSoundFile(@"d:\Sound\XM.wav").Play();
+                                Thread.Sleep(3000);
+                                Speck(stt);
+                                Thread.Sleep(1500);
+                                LoadSoundFile(@"d:\Sound\DQ.wav").Play();
+                                Thread.Sleep(2500);
+                                LoadSoundFile(@"d:\Sound\1.wav").Play();
+                                MessageBox.Show("Next in Gate 2: " + getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString())));
+                                lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()));
+                                break;
+                            }
                         }
                     }
-                    if (flag == false)
-                        MessageBox.Show("Đã hết số vào quầy!");
                 }
             }
             catch (Exception ex)
@@ -169,8 +424,41 @@ namespace Gate
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            lbServing1.Text = "";
-            lbServing2.Text = "";
+            try
+            {
+                lbServing1.Text = "";
+                lbServing2.Text = "";
+                using (SqlConnection con = new SqlConnection(getConnectionString()))
+                {
+                    SqlDataAdapter sDa = new SqlDataAdapter("Select * from TbQms Where status='in progress' and LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "'", con);
+                    DataTable dt = new DataTable();
+                    sDa.Fill(dt);
+                    int count = dt.Rows.Count;
+                    if (count == 0)
+                    {
+                        lbServing1.Text = "";
+                        lbServing2.Text = "";
+                    }
+                    else
+                    {
+                        for (int i = 0; i < count; i++)
+                        {
+                            if (dt.Rows[i]["quay"].ToString().Trim().Equals("1"))
+                            {
+                                lbServing1.Text = dt.Rows[i]["stt"].ToString();
+                            }
+                            if (dt.Rows[i]["quay"].ToString().Trim().Equals("2"))
+                            {
+                                lbServing2.Text = dt.Rows[i]["stt"].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         public SoundPlayer LoadSoundFile(string filename)
@@ -834,7 +1122,7 @@ namespace Gate
                 using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
-                    SqlDataAdapter sDa = new SqlDataAdapter("Select top 1 * From TbQms Where quay=1 and status='com' and LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "' and LEFT(convert(VARCHAR,datecom,120),10)='"+today+"' Order by datecom desc,stt desc", con);
+                    SqlDataAdapter sDa = new SqlDataAdapter("Select * From TbQms Where quay=1 and status='in progress' and LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "'", con);
                     DataTable dt = new DataTable();
                     sDa.Fill(dt);
                     if (dt.Rows.Count == 0)
@@ -843,7 +1131,6 @@ namespace Gate
                     }
                     else
                     {
-                        lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString()));
                         LoadSoundFile(@"d:\Sound\XM.wav").Play();
                         Thread.Sleep(3000);
                         Speck(Int32.Parse(dt.Rows[0]["stt"].ToString()));
@@ -867,14 +1154,13 @@ namespace Gate
                 using (SqlConnection con = new SqlConnection(getConnectionString()))
                 {
                     con.Open();
-                    SqlDataAdapter sDa = new SqlDataAdapter("Select top 1 * From TbQms Where quay=2 and status='com' and LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "' and LEFT(convert(VARCHAR,datecom,120),10)='" + today + "' Order by datecom desc,stt desc", con);
+                    SqlDataAdapter sDa = new SqlDataAdapter("Select * From TbQms Where quay=2 and status='in progress' and LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "'", con);
                     DataTable dt = new DataTable();
                     sDa.Fill(dt);
                     if (dt.Rows.Count == 0)
                         MessageBox.Show("Hôm nay chưa có khách vào!");
                     else
                     {
-                        lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[0]["stt"].ToString()));
                         LoadSoundFile(@"d:\Sound\XM.wav").Play();
                         Thread.Sleep(3000);
                         Speck(Int32.Parse(dt.Rows[0]["stt"].ToString()));

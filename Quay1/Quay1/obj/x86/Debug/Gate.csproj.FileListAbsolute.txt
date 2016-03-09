@@ -42,3 +42,25 @@ D:\Git\git\Quay1\Quay1\obj\x86\Debug\GenerateResource.write.1 (1).tlog
 D:\Git\git\Quay1\Quay1\obj\x86\Debug\GenerateResource.write.1.tlog
 D:\Git\git\Quay1\Quay1\obj\x86\Debug\Quay1.exe.manifest
 D:\Git\git\Quay1\Quay1\obj\x86\Debug\Quay1.application
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\Interop.WMPLib.dll
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\AxInterop.WMPLib.dll
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\Gate.csproj.ResolveComReference.cache
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\Quay1.exe
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\Quay1.pdb
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Debug\Quay1.exe.manifest
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Debug\Quay1.application
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Debug\Quay1.exe
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Debug\Quay1.pdb
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Debug\Interop.WMPLib.dll
+C:\Users\ttuananh\Desktop\Quay1\Quay1\bin\Debug\AxInterop.WMPLib.dll
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\Gate.Form1.resources
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\Gate.ICS.resources
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\Gate.Properties.Resources.resources
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\Gate.Resource1.resources
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\GenerateResource.read.1 (1).tlog
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\GenerateResource.write.1 (1).tlog
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\Quay1.exe.manifest
+C:\Users\ttuananh\Desktop\Quay1\Quay1\obj\x86\Debug\Quay1.application

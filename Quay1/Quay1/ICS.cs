@@ -151,11 +151,11 @@ namespace Gate
                         string sqlInsert = "insert into TbQms(stt,status,datecreate) values(@stt,@status,@datecreate)";
                         SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
                         int stt = Int32.Parse(dt.Rows[count - 1]["stt"].ToString()) + 1;
-                        sqlCom.Parameters.AddWithValue("stt", 1);
+                        sqlCom.Parameters.AddWithValue("stt", 1000);
                         sqlCom.Parameters.AddWithValue("status", "new");
                         sqlCom.Parameters.AddWithValue("datecreate", DateTime.Now);
                         sqlCom.ExecuteNonQuery();
-                        MessageBox.Show("Phat so ke tiep " + 1);
+                        MessageBox.Show("Phat so ke tiep " + 1000);
                         SqlDataAdapter sda = new SqlDataAdapter("Select * from TbQms where LEFT(convert(VARCHAR,datecreate,120),10)='" + today + "'  order by stt", con);
                         DataTable dt1 = new DataTable();
                         sda.Fill(dt1);
