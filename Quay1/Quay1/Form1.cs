@@ -86,6 +86,7 @@ namespace Gate
                         SqlCommand sqlCom2 = new SqlCommand(sqlInsert2, con);
                         sqlCom2.Parameters.AddWithValue("@datecom", DateTime.Now);
                         sqlCom2.ExecuteNonQuery();
+                        lbServing1.Text = "";
                         MessageBox.Show("Đã hết số vào quầy!");
                     }
                     else if ((dt.Rows[count - 1]["status"].ToString() == "in progress") && (dt.Rows[count - 2]["status"].ToString()=="com"))
@@ -97,6 +98,7 @@ namespace Gate
                             sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
                             sqlCom.ExecuteNonQuery();
                         }
+                        lbServing1.Text = "";
                         MessageBox.Show("Đã hết số vào quầy!");
                     }
                     else if ((dt.Rows[count - 1]["status"].ToString() == "in progress") && (dt.Rows[count - 2]["status"].ToString() == "in progress"))
@@ -115,6 +117,7 @@ namespace Gate
                             sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
                             sqlCom.ExecuteNonQuery();
                         }
+                        lbServing1.Text = "";
                         MessageBox.Show("Đã hết số vào quầy!");
                     }
 
@@ -212,11 +215,11 @@ namespace Gate
                                 lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()) + 1);
                                 break;
                             }
-                            else if ((dt.Rows[i]["status"].ToString() == "com") && (dt.Rows[j]["status"].ToString() == "new"))
+                            else if ((dt.Rows[j]["status"].ToString() == "com") && (dt.Rows[z]["status"].ToString() == "new"))
                             {
-                                string sqlInsert = "update TbQms set status='in progress',quay=1 where stt=" + dt.Rows[j]["stt"].ToString();
+                                string sqlInsert = "update TbQms set status='in progress',quay=1 where stt=" + dt.Rows[z]["stt"].ToString();
                                 SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
-                                int stt = Int32.Parse(dt.Rows[j]["stt"].ToString());
+                                int stt = Int32.Parse(dt.Rows[z]["stt"].ToString());
                                 sqlCom.ExecuteNonQuery();
                                 LoadSoundFile(@"d:\Sound\XM.wav").Play();
                                 Thread.Sleep(3000);
@@ -225,8 +228,8 @@ namespace Gate
                                 LoadSoundFile(@"d:\Sound\DQ.wav").Play();
                                 Thread.Sleep(2500);
                                 LoadSoundFile(@"d:\Sound\1.wav").Play();
-                                MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString())));
-                                lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()));
+                                MessageBox.Show("Next in Gate 1: " + getStringstt(Int32.Parse(dt.Rows[z]["stt"].ToString())));
+                                lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[z]["stt"].ToString()));
                                 break;
                             }
                         }
@@ -273,6 +276,7 @@ namespace Gate
                         SqlCommand sqlCom2 = new SqlCommand(sqlInsert2, con);
                         sqlCom2.Parameters.AddWithValue("@datecom", DateTime.Now);
                         sqlCom2.ExecuteNonQuery();
+                        lbServing2.Text = "";
                         MessageBox.Show("Đã hết số vào quầy!");
                     }
                     else if ((dt.Rows[count - 1]["status"].ToString() == "in progress") && (dt.Rows[count - 2]["status"].ToString() == "com"))
@@ -284,6 +288,7 @@ namespace Gate
                             sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
                             sqlCom.ExecuteNonQuery();
                         }
+                        lbServing2.Text = "";
                         MessageBox.Show("Đã hết số vào quầy!");
                     }
                     else if ((dt.Rows[count - 1]["status"].ToString() == "in progress") && (dt.Rows[count - 2]["status"].ToString() == "in progress"))
@@ -302,6 +307,7 @@ namespace Gate
                             sqlCom.Parameters.AddWithValue("@datecom", DateTime.Now);
                             sqlCom.ExecuteNonQuery();
                         }
+                        lbServing2.Text = "";
                         MessageBox.Show("Đã hết số vào quầy!");
                     }
 
@@ -395,11 +401,11 @@ namespace Gate
                                 lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()) + 1);
                                 break;
                             }
-                            else if ((dt.Rows[i]["status"].ToString() == "com") && (dt.Rows[j]["status"].ToString() == "new"))
+                            else if ((dt.Rows[j]["status"].ToString() == "com") && (dt.Rows[z]["status"].ToString() == "new"))
                             {
-                                string sqlInsert = "update TbQms set status='in progress',quay=2 where stt=" + dt.Rows[j]["stt"].ToString();
+                                string sqlInsert = "update TbQms set status='in progress',quay=2 where stt=" + dt.Rows[z]["stt"].ToString();
                                 SqlCommand sqlCom = new SqlCommand(sqlInsert, con);
-                                int stt = Int32.Parse(dt.Rows[j]["stt"].ToString());
+                                int stt = Int32.Parse(dt.Rows[z]["stt"].ToString());
                                 sqlCom.ExecuteNonQuery();
                                 LoadSoundFile(@"d:\Sound\XM.wav").Play();
                                 Thread.Sleep(3000);
@@ -407,9 +413,9 @@ namespace Gate
                                 Thread.Sleep(1500);
                                 LoadSoundFile(@"d:\Sound\DQ.wav").Play();
                                 Thread.Sleep(2500);
-                                LoadSoundFile(@"d:\Sound\1.wav").Play();
-                                MessageBox.Show("Next in Gate 2: " + getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString())));
-                                lbServing1.Text = getStringstt(Int32.Parse(dt.Rows[j]["stt"].ToString()));
+                                LoadSoundFile(@"d:\Sound\2.wav").Play();
+                                MessageBox.Show("Next in Gate 2: " + getStringstt(Int32.Parse(dt.Rows[z]["stt"].ToString())));
+                                lbServing2.Text = getStringstt(Int32.Parse(dt.Rows[z]["stt"].ToString()));
                                 break;
                             }
                         }
@@ -1127,7 +1133,7 @@ namespace Gate
                     sDa.Fill(dt);
                     if (dt.Rows.Count == 0)
                     {
-                        MessageBox.Show("Hôm nay chưa có khách vào!");
+                        MessageBox.Show("Chưa có khách vào!");
                     }
                     else
                     {
@@ -1158,7 +1164,7 @@ namespace Gate
                     DataTable dt = new DataTable();
                     sDa.Fill(dt);
                     if (dt.Rows.Count == 0)
-                        MessageBox.Show("Hôm nay chưa có khách vào!");
+                        MessageBox.Show("Chưa có khách vào!");
                     else
                     {
                         LoadSoundFile(@"d:\Sound\XM.wav").Play();
